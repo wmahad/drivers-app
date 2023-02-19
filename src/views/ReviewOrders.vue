@@ -2,7 +2,7 @@
 import { ref } from "vue";
 import { storeToRefs } from "pinia";
 import { useRouter, useRoute } from "vue-router";
-import { useRouteStore } from "@/store";
+import { useRouteStore, OrderType, IssueType } from "@/store";
 import LayoutComp from "@/components/LayoutComp.vue";
 import QuantitySection from "@/components/QuantitySection.vue";
 import OrderButtons from "@/components/OrderButtons.vue";
@@ -23,6 +23,10 @@ function goToNextStop() {
 function reportIssue(issue: string, id: string) {
   toggle.value = null;
   store.reportOrderIssues(id, issue);
+}
+
+function getOrderClass(type: number) {
+  return type === OrderType.pickup ? "pick-up" : "drop-off";
 }
 </script>
 
@@ -49,12 +53,11 @@ function reportIssue(issue: string, id: string) {
       class="elevation-2 mb-5"
       v-for="order in orders"
       :key="order.order_id"
+      :data-testid="order.stream_type"
     >
       <div class="d-flex">
-        <div :class="['order-icon', order.type === 0 ? 'pick-up' : 'drop-off']">
-          <div
-            :class="['curve-border', order.type === 0 ? 'pick-up' : 'drop-off']"
-          >
+        <div :class="['order-icon', getOrderClass(order.type)]">
+          <div :class="['curve-border', getOrderClass(order.type)]">
             <v-img contain height="20" src="@/assets/logo.svg" />
           </div>
         </div>
@@ -89,10 +92,19 @@ function reportIssue(issue: string, id: string) {
                 @update:model-value="reportIssue($event, order.order_id)"
                 v-model="order.issue"
               >
-                <v-radio label="Wrong quantity ordered" value="1"></v-radio>
-                <v-radio label="Wrong container type" value="2"></v-radio>
-                <v-radio label="Container not accessible" value="3"></v-radio>
-                <v-radio label="Other" value="0"></v-radio>
+                <v-radio
+                  label="Wrong quantity ordered"
+                  :value="IssueType.wrong_quantity_ordered"
+                ></v-radio>
+                <v-radio
+                  label="Wrong container type"
+                  :value="IssueType.wrong_container_type"
+                ></v-radio>
+                <v-radio
+                  label="Container not accessible"
+                  :value="IssueType.container_not_accessible"
+                ></v-radio>
+                <v-radio label="Other" :value="IssueType.other"></v-radio>
               </v-radio-group>
             </div>
           </v-card-item>

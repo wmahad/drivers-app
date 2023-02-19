@@ -16,14 +16,18 @@ defineProps<{
         color="primary"
         icon="mdi-minus"
         class="text-white-color"
+        data-testid="reduce-quantity-btn"
         @click="store.adjustQuantity(id, -1)"
       />
-      <span class="text-h5 px-3">{{ quantity }}</span>
+      <span data-testid="quantity-view" class="text-h5 px-3">{{
+        quantity
+      }}</span>
       <v-btn
         class="text-white-color"
         size="x-small"
         color="primary"
         icon="mdi-plus"
+        data-testid="increase-quantity-btn"
         @click="store.adjustQuantity(id)"
       />
     </div>

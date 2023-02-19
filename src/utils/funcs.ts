@@ -6,6 +6,7 @@ export const fetcher = async () => {
 };
 
 export const getTime = (date: string) => {
+  if (!date) return null;
   return format(new Date(date), "HH:mm a");
 };
 
@@ -13,7 +14,7 @@ export const upperCase = (text: string) => {
   return text.toUpperCase();
 };
 
-export function titleCase(str) {
+export function titleCase(str = "") {
   return str
     .toLowerCase()
     .split(" ")

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { titleCase } from "@/utils";
+import { OrderType } from "@/store";
 defineProps<{
   title: string;
   type: number;
@@ -18,7 +19,7 @@ defineProps<{
         <span class="text-caption">Adjust quantity (if needed)</span>
       </div>
       <h5 class="text-h6">
-        {{ type === 0 ? "PICKUP" : "PLACEMENT" }}
+        {{ type === OrderType.pickup ? "PICKUP" : "PLACEMENT" }}
       </h5>
     </div>
   </v-card-item>

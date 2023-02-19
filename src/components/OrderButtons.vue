@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useRouteStore } from "@/store";
+import { useRouteStore, StatusType } from "@/store";
 
 const store = useRouteStore();
 defineProps<{
@@ -9,7 +9,7 @@ defineProps<{
 }>();
 
 function isCompleted(orderStatus: number) {
-  return orderStatus === 4;
+  return orderStatus === StatusType.completed;
 }
 </script>
 
@@ -21,6 +21,7 @@ function isCompleted(orderStatus: number) {
           :class="issue ? 'outline-btn' : 'text-white-color'"
           :color="issue ? 'background' : 'info'"
           icon="mdi-alert-outline"
+          data-testid="report-issue"
           @click="$emit('report-issue', id)"
         />
         <v-btn
@@ -30,6 +31,7 @@ function isCompleted(orderStatus: number) {
             'ml-2',
             isCompleted(status) ? 'cancel-btn' : 'text-white-color',
           ]"
+          data-testid="complete-btn"
           @click="store.modifyOrderStatus(id)"
         />
       </div>
